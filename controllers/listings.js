@@ -15,7 +15,7 @@ module.exports.showListing=async (req, res) => {
     const listing = await Listing.findById(id).populate("reviews").populate("owner");
     if(!listing){
         req.flash("error","Listing you requested for doesn't exists");
-        res.redirect("/listings");
+        return res.redirect("/listings");
     }
     console.log(listing);
     res.render("listings/show", { listing });
@@ -41,7 +41,7 @@ module.exports.renderEditForm=async (req, res) => {
     const listing = await Listing.findById(id);
     if(!listing){
         req.flash("error","Listing you requested for doesn't exists");
-        res.redirect("/listings");
+        return res.redirect("/listings");
     }
     res.render("listings/edit.ejs", { listing });
 
