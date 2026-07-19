@@ -42,21 +42,23 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
 
+const secret = process.env.SECRET || "mysupersecretcodeforwanderlust12345!";
+
 const store= MongoStore.create({
     mongoUrl : dbUrl,
     crypto: {
-    secret:process.env.SECRET,
-  },
-  touchAfter:24*3600,
+        secret: secret,
+    },
+    touchAfter: 24 * 3600,
 });
 
 store.on("error",(err)=>{
     console.log("ERROR IN MONGO SESSION STORE",err);
-})
+});
 
 const sessionOptions = {
     store,
-    secret: process.env.SECRET,
+    secret: secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
