@@ -42,7 +42,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
 
-const secret = process.env.SECRET || "mysupersecretcodeforwanderlust12345!";
+const secret = (process.env.SECRET && process.env.SECRET.length >= 14) 
+    ? process.env.SECRET 
+    : "mysupersecretcodeforwanderlust12345!";
 
 const store= MongoStore.create({
     mongoUrl : dbUrl,
