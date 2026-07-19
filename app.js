@@ -42,15 +42,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
 
-const secret = (process.env.SECRET && process.env.SECRET.length >= 14) 
-    ? process.env.SECRET 
-    : "mysupersecretcodeforwanderlust12345!";
-
-const store= MongoStore.create({
-    mongoUrl : dbUrl,
-    crypto: {
-        secret: secret,
-    },
+const store = MongoStore.create({
+    mongoUrl: dbUrl,
     touchAfter: 24 * 3600,
 });
 
@@ -60,7 +53,7 @@ store.on("error",(err)=>{
 
 const sessionOptions = {
     store,
-    secret: secret,
+    secret: process.env.SECRET || "mysupersecretcodeforwanderlust",
     resave: false,
     saveUninitialized: true,
     cookie: {
